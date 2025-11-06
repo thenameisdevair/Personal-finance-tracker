@@ -18,7 +18,8 @@ GitHub Pages: (add your live URL after enabling Pages)
 
 ## Quick Start
 
-Open `index.html` in a browser.
+Open `GitHub Pages: https://thenameisdevair.github.io/Personal-finance-tracker/
+` in a browser.
 
 ## Tech
 
