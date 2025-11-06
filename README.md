@@ -23,3 +23,5 @@ Open `index.html` in a browser.
 ## Tech
 
 Vanilla JS, HTML, CSS. Chart.js via CDN. Data stays in the browser.
+
+Deployed with GitHub Pages.
