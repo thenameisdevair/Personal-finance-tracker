@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Personal Finance Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Chart.js CDN -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+      defer
+    ></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="container">
+      <h1>Personal Finance Tracker</h1>
+      <p class="sub">
+        Track income & expenses. Filter, sort, visualize, and export CSV — all
+        in your browser.
+      </p>
+    </header>
+
+    <main class="container grid">
+      <!-- Forms Column -->
+      <section class="card">
+        <h2>Add Transaction</h2>
+        <form id="txForm" class="form">
+          <div class="row">
+            <label>Type</label>
+            <select id="type" required>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+          <div class="row">
+            <label>Amount</label>
+            <input id="amount" type="number" min="0" step="0.01" required />
+          </div>
+          <div class="row">
+            <label>Date</label>
+            <input id="date" type="date" required />
+          </div>
+          <div class="row">
+            <label>Category</label>
+            <select id="category" required></select>
+          </div>
+          <div class="row">
+            <label>Notes</label>
+            <input id="notes" type="text" placeholder="Optional" />
+          </div>
+          <button class="btn" type="submit">Add</button>
+        </form>
+
+        <hr />
+
+        <h2>Manage Categories</h2>
+        <form id="catForm" class="form form-inline">
+          <input
+            id="newCategory"
+            type="text"
+            placeholder="e.g., Salary, Rent, Food"
+          />
+          <select id="catType">
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+          <button class="btn" type="submit">Add Category</button>
+        </form>
+
+        <ul id="categoryList" class="pill-list"></ul>
+      </section>
+
+      <!-- Table + Filters Column -->
+      <section class="card">
+        <div class="flex-between">
+          <h2>Transactions</h2>
+          <div class="totals">
+            <span id="totalIncome">+0</span>
+            <span id="totalExpense">-0</span>
+            <span id="net">= 0</span>
+          </div>
+        </div>
+
+        <div class="filters">
+          <input id="fText" type="text" placeholder="Search notes…" />
+          <select id="fType">
+            <option value="all">All</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+          <select id="fCategory">
+            <option value="all">All categories</option>
+          </select>
+          <input id="fFrom" type="date" />
+          <input id="fTo" type="date" />
+          <select id="sortBy">
+            <option value="date-desc">Date ↓</option>
+            <option value="date-asc">Date ↑</option>
+            <option value="amount-desc">Amount ↓</option>
+            <option value="amount-asc">Amount ↑</option>
+          </select>
+          <button id="clearFilters" class="btn btn-ghost" type="button">
+            Clear
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th class="right">Amount</th>
+                <th>Notes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="txTbody"></tbody>
+          </table>
+        </div>
+
+        <div class="actions">
+          <button id="exportCsv" class="btn" type="button">Export CSV</button>
+          <button id="resetAll" class="btn btn-danger" type="button">
+            Reset All
+          </button>
+        </div>
+      </section>
+
+      <!-- Chart Column -->
+      <section class="card">
+        <h2>Income vs Expense</h2>
+        <canvas id="ieChart" height="200"></canvas>
+      </section>
+    </main>
+
+    <footer class="container muted">
+      <p>
+        Local storage only. No data leaves your browser. Built for Web3Bridge
+        Cohort XIII pre-qualification.
+      </p>
+    </footer>
+  </body>
+</html>
