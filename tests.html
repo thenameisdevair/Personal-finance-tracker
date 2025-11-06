@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PFT Tests</title>
+    <style>
+      body {
+        font-family: system-ui;
+        padding: 20px;
+      }
+      .ok {
+        color: green;
+      }
+      .fail {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Personal Finance Tracker – Tests</h1>
+    <p>Open devtools for details. Simple assertions for CSV helpers.</p>
+    <script src="app.js"></script>
+    <script>
+      const { toCSV, csvEscape } = window.__PFT__ || {};
+      const tests = [];
+      function test(name, fn) {
+        try {
+          fn();
+          console.log("%c✔ " + name, "color:green");
+          tests.push(["ok", name]);
+        } catch (e) {
+          console.error("✖ " + name, e);
+          tests.push(["fail", name + ": " + e.message]);
+        }
+      }
+      function expectEqual(a, b) {
+        if (a !== b) throw new Error(`Expected ${b} but got ${a}`);
+      }
+
+      test("csvEscape handles quotes", () => {
+        expectEqual(csvEscape('a"b'), '"a""b"');
+      });
+      test("toCSV header", () => {
+        const csv = toCSV([]).split("\n")[0];
+        expectEqual(csv, "id,type,amount,date,category,notes");
+      });
+      test("toCSV row quoting for comma", () => {
+        const csv = toCSV([
+          {
+            id: "1",
+            type: "income",
+            amount: 10,
+            date: "2025-11-06",
+            category: "Salary",
+            notes: "hello, world",
+          },
+        ]);
+        const row = csv.split("\n")[1];
+        expectEqual(row.includes('"hello, world"'), true);
+      });
+
+      // Render summary in the page
+      const ul = document.createElement("ul");
+      for (const [status, msg] of tests) {
+        const li = document.createElement("li");
+        li.textContent = msg;
+        li.className = status === "ok" ? "ok" : "fail";
+        ul.appendChild(li);
+      }
+      document.body.appendChild(ul);
+    </script>
+  </body>
+</html>
